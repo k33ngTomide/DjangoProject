@@ -1,0 +1,4 @@
+check-containers:
+    docker ps -a
+
+.PHONY: check-containers
