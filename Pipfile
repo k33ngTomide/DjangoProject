@@ -11,6 +11,9 @@ djangorestframework = "*"
 drf-nested-routers = "*"
 routers = "*"
 router = "*"
+djoser = "*"
+djangorestframework-simplejwt = "*"
+social-auth-app-django = "*"
 
 [dev-packages]
 

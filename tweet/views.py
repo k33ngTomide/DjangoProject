@@ -5,7 +5,9 @@ from rest_framework import viewsets
 # Create your views here.
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView, \
     RetrieveDestroyAPIView
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet, GenericViewSet
+from .pagination import DefaultPagination
 
 from .models import Tweet, Comment
 from .serializers import TweetSerializer, CommentSerializer
@@ -14,11 +16,14 @@ from .serializers import TweetSerializer, CommentSerializer
 class TweetViewSet(ModelViewSet):
     queryset = Tweet.objects.all()
     serializer_class = TweetSerializer
+    permission_classes = [IsAuthenticated]
+    pagination_class = DefaultPagination
 
 
-class CommentViewSet(ModelViewSet):
+class CommentViewSet(ListCreateAPIView, RetrieveDestroyAPIView, GenericViewSet):
     # queryset = Comment.objects.select_related('tweet').all()
     serializer_class = CommentSerializer
+    permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         queryset = Comment.objects.select_related("tweet").filter(tweet_id=self.kwargs['tweet_pk'])
